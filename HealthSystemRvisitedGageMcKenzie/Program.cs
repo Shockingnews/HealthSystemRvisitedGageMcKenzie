@@ -41,6 +41,12 @@ namespace HealthSystemRvisitedGageMcKenzie
 
     class Player
     {
+        Health _health;
+        Health _shield;
 
+        void TakeDamage(int damage)
+        {
+
+        }
     }
 }
