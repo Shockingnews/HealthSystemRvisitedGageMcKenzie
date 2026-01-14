@@ -10,7 +10,8 @@ namespace HealthSystemRvisitedGageMcKenzie
     {
         static void Main(string[] args)
         {
-
+            Player player = new Player(name: "Gage", maxHealth: 100, maxSheild: 50);
+            player.TakeDamage(100);
         }
     }
 
