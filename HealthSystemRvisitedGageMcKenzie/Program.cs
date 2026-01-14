@@ -17,15 +17,28 @@ namespace HealthSystemRvisitedGageMcKenzie
 
     class Health
     {
-        int _CurrentHealth;
-        int _MaxHealth;
+        public int _CurrentHealth;
+        public int _MaxHealth;
         public float GetHealth() 
         {
             return _CurrentHealth;
         }
         public void TakeDamage(int damage)
         {
-            _CurrentHealth = _CurrentHealth - damage;
+            
+            if(damage < 0)
+            {
+                Console.WriteLine("can't deal nagative numbers");
+            }
+            else
+            {
+                _CurrentHealth = _CurrentHealth - damage;
+                if (_CurrentHealth < 0)
+                {
+                    _CurrentHealth = 0;
+                }
+            }
+                
         }
         public void Restore()
         {
@@ -34,7 +47,16 @@ namespace HealthSystemRvisitedGageMcKenzie
 
         public void Heal(int heal)
         {
-            _CurrentHealth = _CurrentHealth + heal;
+            if(heal > 0)
+            {
+                _CurrentHealth = _CurrentHealth + heal;
+                if(_CurrentHealth > _MaxHealth)
+                {
+                    _CurrentHealth = _MaxHealth;
+                }
+            }
+            else { Console.WriteLine("Can't have negavtive healing"); }
+            
         }
         public Health(int maxHealth)
         {
@@ -46,24 +68,56 @@ namespace HealthSystemRvisitedGageMcKenzie
 
     class Player
     {
+
         Health _health = new Health(100);
         Health _shield = new Health(50);
-        string _name;
+        // 
+        public string Name { get; private set; }
+        public int excessDamage;
 
 
         
 
         void TakeDamage(int damage)
         {
-            if (_shield.GetHealth() > 0 )
+            if (_shield._CurrentHealth > 0 )
             {
-                 = _shield.GetHealth() - damage;
+                if (damage > _shield._CurrentHealth) 
+                {
+                    excessDamage = damage - _shield._CurrentHealth;
+                    _shield._CurrentHealth = 0;
+                }
+                else
+                {
+                    _shield._CurrentHealth = _shield._CurrentHealth - damage;
+                }
+                    
             }
+            if (_shield._CurrentHealth == 0)
+            {
+                if(excessDamage!= 0)
+                {
+                    _health._CurrentHealth -= excessDamage;
+                    excessDamage = 0;
+                }
+                else
+                {
+                    _health;
+                }
+            }
+                 
+           
 
         }
-        string GetStatusString()
+        public string GetStatusString()
         {
+            return "hi";
+        }
+        public Player(string name, int maxHealth,int maxSheild)
+        {
+            Name = name;
 
         }
+
     }
 }
