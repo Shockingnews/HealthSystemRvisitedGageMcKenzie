@@ -69,8 +69,8 @@ namespace HealthSystemRvisitedGageMcKenzie
     class Player
     {
 
-        Health _health = new Health(100);
-        Health _shield = new Health(50);
+        Health _health;
+        Health _shield;
         // 
         public string Name { get; private set; }
         public int excessDamage;
@@ -85,6 +85,7 @@ namespace HealthSystemRvisitedGageMcKenzie
                 if (damage > _shield._CurrentHealth) 
                 {
                     excessDamage = damage - _shield._CurrentHealth;
+                    
                     _shield._CurrentHealth = 0;
                 }
                 else
@@ -102,7 +103,7 @@ namespace HealthSystemRvisitedGageMcKenzie
                 }
                 else
                 {
-                    _health;
+                    _health._CurrentHealth -= damage;
                 }
             }
                  
@@ -111,12 +112,22 @@ namespace HealthSystemRvisitedGageMcKenzie
         }
         public string GetStatusString()
         {
-            return "hi";
+            if (_health._CurrentHealth <= 0)
+            {
+                _health._CurrentHealth = 0;
+                return "dead";
+            }
+            else
+            {
+                return "Alive";
+            }
+                
         }
         public Player(string name, int maxHealth,int maxSheild)
         {
             Name = name;
-
+            _health = new Health(maxHealth);
+            _shield = new Health(maxSheild);
         }
 
     }
