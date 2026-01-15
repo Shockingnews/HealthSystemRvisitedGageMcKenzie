@@ -52,7 +52,7 @@ namespace HealthSystemRvisitedGageMcKenzie
             Console.Clear();
             Console.WriteLine(player.GetStatusString());
             Console.WriteLine("You Died");
-            
+            Console.ReadKey(true);
             
             
         }
