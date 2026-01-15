@@ -8,14 +8,53 @@ namespace HealthSystemRvisitedGageMcKenzie
 {
     internal class Program
     {
+        
         static void Main(string[] args)
         {
-            Player player = new Player(name: "Gage", maxHealth: 100, maxSheild: 50);
+            bool alive = true;
+            Random random = new Random();
+            int num = random.Next(1, 21);
+
+            Console.Write("Enter Name: ");
+            string name = Console.ReadLine();
+            Console.Clear();
+            
+
+            Player player = new Player(name: name, maxHealth: 100, maxSheild: 50);
             Console.WriteLine(player.GetStatusString());
-            player.TakeDamage(150);
+            Console.WriteLine("Press D for damage and H to heal");
+
+            while (alive)
+            {
+
+                
+                ConsoleKeyInfo input = Console.ReadKey(true);
+                if (input.Key == ConsoleKey.D)
+                {
+                    player.TakeDamage(num);
+                    Console.Clear();
+                }
+                if (input.Key == ConsoleKey.H)
+                {
+                    player._health.Heal(num);
+                    Console.Clear();
+                }
+                if (player._health.CurrentHealth == 0)
+                {
+                    alive = false;
+                    Console.Clear();
+
+                }
+                Console.WriteLine(player.GetStatusString());
+                Console.WriteLine("Press D for damage and H to heal");
+                
+            }
+            Console.Clear();
             Console.WriteLine(player.GetStatusString());
-            Console.WriteLine(player._health.CurrentHealth);
-            Console.WriteLine(player._shield.CurrentHealth);
+            Console.WriteLine("You Died");
+            
+            
+            
         }
     }
 
@@ -126,11 +165,11 @@ namespace HealthSystemRvisitedGageMcKenzie
             if (_health.CurrentHealth <= 0)
             {
                 //_health.CurrentHealth = 0;
-                return "dead";
+                return $"Name: {Name} Health: {_health.CurrentHealth} Shield: {_shield.CurrentHealth} Status: Dead";
             }
             else
             {
-                return "Alive";
+                return $"Name: {Name} Health: {_health.CurrentHealth} Shield: {_shield.CurrentHealth} Status: Alive";
             }
                 
         }
