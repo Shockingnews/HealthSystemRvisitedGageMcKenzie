@@ -11,18 +11,23 @@ namespace HealthSystemRvisitedGageMcKenzie
         static void Main(string[] args)
         {
             Player player = new Player(name: "Gage", maxHealth: 100, maxSheild: 50);
-            player.TakeDamage(100);
+            Console.WriteLine(player.GetStatusString());
+            player.TakeDamage(150);
+            Console.WriteLine(player.GetStatusString());
+            Console.WriteLine(player._health.CurrentHealth);
+            Console.WriteLine(player._shield.CurrentHealth);
         }
     }
 
 
     class Health
     {
-        public int _CurrentHealth;
-        public int _MaxHealth;
+         public int CurrentHealth { get; private set; }
+        
+         public int MaxHealth { get; private set; }
         public float GetHealth() 
         {
-            return _CurrentHealth;
+            return CurrentHealth;
         }
         public void TakeDamage(int damage)
         {
@@ -33,27 +38,27 @@ namespace HealthSystemRvisitedGageMcKenzie
             }
             else
             {
-                _CurrentHealth = _CurrentHealth - damage;
-                if (_CurrentHealth < 0)
+                CurrentHealth = CurrentHealth - damage;
+                if (CurrentHealth < 0)
                 {
-                    _CurrentHealth = 0;
+                    CurrentHealth = 0;
                 }
             }
                 
         }
         public void Restore()
         {
-            _CurrentHealth = _MaxHealth;
+            CurrentHealth = MaxHealth;
         }
 
         public void Heal(int heal)
         {
             if(heal > 0)
             {
-                _CurrentHealth = _CurrentHealth + heal;
-                if(_CurrentHealth > _MaxHealth)
+                CurrentHealth = CurrentHealth + heal;
+                if(CurrentHealth > MaxHealth)
                 {
-                    _CurrentHealth = _MaxHealth;
+                    CurrentHealth = MaxHealth;
                 }
             }
             else { Console.WriteLine("Can't have negavtive healing"); }
@@ -61,8 +66,8 @@ namespace HealthSystemRvisitedGageMcKenzie
         }
         public Health(int maxHealth)
         {
-            _MaxHealth = maxHealth;
-            _CurrentHealth = maxHealth;
+            MaxHealth = maxHealth;
+            CurrentHealth = maxHealth;
 
         }
     }
@@ -70,41 +75,46 @@ namespace HealthSystemRvisitedGageMcKenzie
     class Player
     {
 
-        Health _health;
-        Health _shield;
+        public Health _health { get; private set; }
+        public Health _shield { get; private set; }
         // 
-        public string Name { get; private set; }
+
+        public string Name { get;  set; }
         public int excessDamage;
 
 
         
 
-        void TakeDamage(int damage)
+        public void TakeDamage(int damage)
         {
-            if (_shield._CurrentHealth > 0 )
+            if (_shield.CurrentHealth > 0 )
             {
-                if (damage > _shield._CurrentHealth) 
+                if (damage > _shield.CurrentHealth) 
                 {
-                    excessDamage = damage - _shield._CurrentHealth;
+                    excessDamage = damage - _shield.CurrentHealth;
+                    _shield.TakeDamage(excessDamage);
                     
-                    _shield._CurrentHealth = 0;
+                    
                 }
                 else
                 {
-                    _shield._CurrentHealth = _shield._CurrentHealth - damage;
+                    _shield.TakeDamage(damage);
+                    
                 }
                     
             }
-            if (_shield._CurrentHealth == 0)
+            if (_shield.CurrentHealth == 0)
             {
                 if(excessDamage!= 0)
                 {
-                    _health._CurrentHealth -= excessDamage;
+                    _health.TakeDamage(excessDamage);
+                    
                     excessDamage = 0;
                 }
                 else
                 {
-                    _health._CurrentHealth -= damage;
+                    _health.TakeDamage(damage);
+                    
                 }
             }
                  
@@ -113,9 +123,9 @@ namespace HealthSystemRvisitedGageMcKenzie
         }
         public string GetStatusString()
         {
-            if (_health._CurrentHealth <= 0)
+            if (_health.CurrentHealth <= 0)
             {
-                _health._CurrentHealth = 0;
+                //_health.CurrentHealth = 0;
                 return "dead";
             }
             else
